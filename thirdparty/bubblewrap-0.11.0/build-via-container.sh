@@ -5,9 +5,6 @@ set -eux
 SCRIPTDIR=$(dirname $(realpath "$0"))
 source $SCRIPTDIR/../common-vars.sh
 
-echo "SCRIPTDIR is $SCRIPTDIR"
-echo "OUTDIR    is $OUTDIR"
-
 docker run --rm -i -v $SCRIPTDIR:/inputs -v $OUTDIR:/outputs \
             --network=host \
                      $IMAGENAME    sh -s <<EOF
@@ -29,7 +26,5 @@ docker run --rm -i -v $SCRIPTDIR:/inputs -v $OUTDIR:/outputs \
   strip --strip-debug     $TMPSUBDIR/bin/bwrap
   chown $(id -u):$(id -g) $TMPSUBDIR/bin/bwrap
 
-  ls -al /
-  ls -al /outputs
   cp $TMPSUBDIR/bin/bwrap /outputs/bin/
 EOF

@@ -2,4 +2,4 @@ BUILDERNAME="${BUILDER:-debian-bullseye}"
 IMAGENAME="aarnotenjin/${BUILDERNAME}-builder:revb658719257897"
 TMPSUBDIR=/tmp/183018384101018888
 
-OUTDIR=$SCRIPTDIR/../out
+OUTDIR=$(realpath $SCRIPTDIR/../out)

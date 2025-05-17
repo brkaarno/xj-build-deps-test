@@ -9,7 +9,7 @@ source $SCRIPTDIR/../common-vars.sh
 
 PROGNAME=bzip2
 
-$RUNNER run --rm -i -v $SCRIPTDIR:/inputs -v $OUTDIR:/outputs \
+docker run --rm -i -v $SCRIPTDIR:/inputs -v $OUTDIR:/outputs \
             --network=host \
             --user $(id -u):$(id -g) \
                      $IMAGENAME    sh -s <<EOF
