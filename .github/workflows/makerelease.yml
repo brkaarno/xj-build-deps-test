@@ -58,35 +58,13 @@ jobs:
         run: |
           echo "SHORTHASH=$(echo ${{ github.sha }} | cut -c1-13)" >> $GITHUB_ENV
 
-      - name: Create Release
-        id: create_release
-        uses: comnoco/create-release-action@6ac85b5a67d93e181c1a8f97072e2e3ffc582ec4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: rev${{ env.SHORTHASH }}
-          commitish: ${{ env.SHORTHASH }}
-          body: release for rev ${{ github.sha }}
-
-      - name: Upload Release Assets
+      - name: Create Release via gh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          upload_release_asset_txz () {
-            FILEPATH=$1
-            FILENAME=$(basename $FILEPATH)
-            gh api \
-               --method POST \
-               -H "Accept: application/vnd.github+json" \
-               -H "X-GitHub-Api-Version: 2022-11-28" \
-               /repos/{owner}/{repo}/releases/${{ steps.create_release.outputs.id }}/assets?name=$FILENAME \
-              -f "@$FILEPATH"
-          }
-
-          ls -lh *.xz
-
-          for x in $(ls *.xz); do
-            upload_release_asset_txz $x
-            sleep 0.6
-          done
+          gh release create \
+              rev_${{ env.SHORTHASH }} \
+              --notes "release for rev ${{ github.sha }}" \
+              --target ${{ github.sha }} \
+              *.tar.xz
 
