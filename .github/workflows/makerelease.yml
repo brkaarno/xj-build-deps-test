@@ -65,6 +65,8 @@ jobs:
           body: 
 
       - name: Upload Release Assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           upload_release_asset_txz () {
             FILEPATH=$1
