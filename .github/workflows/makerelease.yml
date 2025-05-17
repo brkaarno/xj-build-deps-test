@@ -54,6 +54,10 @@ jobs:
         with:
           merge-multiple: true  # otherwise, we'd get arm64/xj-build-deps_arm64.tar.xz, etc
 
+      - name: Get short hash
+        run: |
+          echo "SHORTHASH=$(echo ${{ github.sha }} | cut -c1-13)" >> $GITHUB_ENV
+
       - name: Create Release
         id: create_release
         uses: comnoco/create-release-action@6ac85b5a67d93e181c1a8f97072e2e3ffc582ec4
@@ -62,7 +66,7 @@ jobs:
         with:
           tag_name: rev${{ env.SHORTHASH }}
           commitish: ${{ env.SHORTHASH }}
-          body: 
+          body: release for rev ${{ github.sha }}
 
       - name: Upload Release Assets
         env:
